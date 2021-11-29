@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Julia set</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <canvas id="canvas" />
+    <script type="text/javascript">
+      const julia = (context, zoom, moveX, moveY) => {
+        const width = canvas.width,
+          height = canvas.height;
+        const imageData = context.getImageData(0, 0, width, height);
+        const cX = -0.7,
+          cY = 0.27015;
+        const maxIter = 255;
+        for (let x = 0; x < width; x++) {
+          for (let y = 0; y < height; y++) {
+            zx = (1.5 * (x - width / 2)) / (0.5 * zoom * width);
+            zy = (1.0 * (y - height / 2)) / (0.5 * zoom * height);
+            let i = maxIter;
+            while (zx * zx + zy * zy < 4 && i > 1) {
+              tmp = zx * zx - zy * zy + cX;
+              zy = 2.0 * zx * zy + cY;
+              zx = tmp;
+              i -= 1;
+            }
+
+            const offset = 4 * (y * width + x);
+            const color = (i << 21) + (i << 10) + i * 8;
+            const redMask = 0xff0000,
+              greenMask = 0xff00,
+              blueMask = 0xff;
+            imageData.data[offset] = (color & redMask) >> 16;
+            imageData.data[offset + 1] = (color & greenMask) >> 8;
+            imageData.data[offset + 2] = color & blueMask;
+            imageData.data[offset + 3] = 255;
+          }
+        }
+        context.putImageData(imageData, 0, 0);
+      };
+
+      $(document).ready(() => {
+        const canvas = document.getElementById("canvas");
+        canvas.width = Math.floor(window.innerWidth);
+        canvas.height = Math.floor(window.innerHeight);
+        const context = canvas.getContext("2d");
+
+        let zoom = 1,
+          moveX = 0,
+          moveY = 0;
+        julia(context, zoom, moveX, moveY);
+
+        $(window).on("wheel", (event) => {
+          const delta = event.originalEvent.deltaY;
+          delta !== 0 && (zoom += delta / 1024);
+          delta !== 0 && julia(context, zoom, moveX, moveY);
+        });
+      });
+    </script>
+  </body>
+</html>
