@@ -4,8 +4,50 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="refresh" content="0; url = /julia/index.html" />
-    <title>Document</title>
+    <!-- <meta http-equiv="refresh" content="0; url = /julia/index.html" /> -->
+    <title>chientrm.github.io</title>
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body></body>
+  <body>
+    <div class="container mx-auto px-10">
+      <div class="text-3xl">chientrm.github.io</div>
+      <hr />
+      <div class="text-xl py-6">Fractal arts</div>
+      <div class="flex flex-row space-x-12">
+        <div>
+          <iframe src="/mandelbrot" title="Mandelbrot set"></iframe>
+          <div>
+            <a
+              class="
+                text-purple-500
+                hover:text-purple-400
+                transition-colors
+                duration-200
+              "
+              href="/mandelbrot"
+              >Mandelbrot set</a
+            >
+          </div>
+        </div>
+        <div class="">
+          <iframe src="/julia" title="Julia set"></iframe>
+          <div>
+            <a
+              class="
+                text-purple-500
+                hover:text-purple-400
+                transition-colors
+                duration-200
+              "
+              href="/julia"
+              >Julia set</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
